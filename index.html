@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<!-- Author: Zihan Li -->
+<head>
+<title> News and Events Generator </title>
+<!-- Latest compiled and minified CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+rel="stylesheet" 
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+crossorigin="anonymous">
+<!-- jQuery library -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
+integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" 
+crossorigin="anonymous"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
+crossorigin="anonymous"></script>
+<!-- CSS writen by Zihan Li -->
+<style>
+  .dropbtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+  }
+
+  .dropbtn:hover, .dropbtn:focus {
+      background-color: #3e8e41;
+  }
+  .dropdown-input {
+      border-box: box-sizing;
+      width: 100%;
+      font-size: 16px;
+      padding: 14px 20px 12px 20px;
+      border: none;
+  }
+  .dropdown {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+  }
+
+  .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f6f6f6;
+      height: auto;
+      max-height: 300px;
+      overflow-x: hidden;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      cursor: pointer;
+  }
+
+  .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+  }
+
+  .dropdown a:hover {background-color: #ddd}
+
+
+  .generatebtn {
+      background-color: #4C50AF;
+      color: white;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+  }
+
+  .boxing {
+    margin: 20px;
+  }
+
+  .generatebtn:hover, .generatebtn:focus {
+      background-color: #3e418e;
+  }
+
+  .well-disp {
+    margin-top: 20px;
+    margin-bottom: 0px;
+  }
+
+  .well { word-break:break-all; }
+</style>
+<!-- Script writen by Zihan Li -->
+<script>
+  // define variables that contains slugs for those choices
+  let dept_dict = {"Aerospace Engineering":"aero", "Biomedical Engineering":"bme", "Chemical Engineering":"che", "Civil and Environmental Engineering":"cee", "Climate and Space Sciences and Engineering":"clasp", "Electrical Engineering and Computer Science":"eecs", "EECS: Computer Science and Engineering":"eecs-cse", "EECS: Electrical and Computer Engineering":"eecs-ece", "Industrial and Operations Engineering":"ioe", "Integrative Systems + Design":"isd", "Materials Science and Engineering":"mse", "Mechanical Engineering":"me", "Naval Architecture and Marine Engineering":"name", "Nuclear Engineering and Radiological Sciences":"ners", "Other Units":"units"}
+  let res_dict = {"All":"", "Data and Computing":"data-computing", "Energy and Environment":"energy-environ", "Health":"health", "Infrastructure":"infra", "Advanced Manufacturing":"adv-manufacturing", "Advanced Materials":"adv-materials", "Robotics":"robotics", "Security":"security", "Space":"space", "Transportation":"transport"}
+  let cc_dict = {"All":"", "Faculty":"faculty", "Alumni":"alumni", "Students":"students", "Awards":"awards", "Diversity":"diversity", "Events":"events", "Facilities":"facilities", "Giving":"giving", "Administration":"admin"}
+  let tags_dict = {"analytics":"analytics", "ann-arbor":"ann-arbor", "applications":"applications", "artificial-intelligence":"artificial-intelligence", "automotive":"automotive", "autonomous-vehicles":"autonomous-vehicles", "aviation":"aviation", "batteries":"batteries", "big-data":"big-data", "biofuels":"biofuels", "biomolecular-engineering":"biomolecular-engineering", "campaign":"campaign", "campus":"campus", "cancer":"cancer", "catalysis-reactions":"catalysis-reactions", "cellular-engineering":"cellular-engineering", "climate-change":"climate-change", "computer-modeling":"computer-modeling", "computing-simulation":"computing-simulation", "connected-automated-vehicles":"connected-automated-vehicles", "cybersecurity":"cybersecurity", "design-production-management":"design-production-management", "donors":"donors", "dynamics-controls":"dynamics-controls", "economic-development":"economic-development", "education":"education", "electronics":"electronics", "energy":"energy", "engineering-education":"engineering-education", "entrepreneurship":"entrepreneurship", "ergonomics-human-factors":"ergonomics-human-factors", "extreme-weather":"extreme-weather", "fission-systems-radiation-transport":"fission-systems-radiation-transport", "flint-water-crisis":"flint-water-crisis", "fracking":"fracking", "games-gaming":"games-gaming", "gas-dynamics":"gas-dynamics", "gifts":"gifts", "global-impact":"global-impact", "graduate-students":"graduate-students", "graduation":"graduation", "great-lakes":"great-lakes", "hacking":"hacking", "health-environment":"health-environment", "health-care":"health-care", "homecoming":"homecoming", "honors-awards":"honors-awards", "human-factors":"human-factors", "hydrodynamics":"hydrodynamics", "imaging-technology":"imaging-technology", "industrial-operations":"industrial-operations", "innovation":"innovation", "international-programs-partnerships":"international-programs-partnerships", "internet":"internet", "lab-on-a-chip":"lab-on-a-chip", "light,-lasers-optics":"light,-lasers-optics", "marine-offshore-structures":"marine-offshore-structures", "marine-renewable-energy":"marine-renewable-energy", "mars":"mars", "materials":"materials", "materials-radiation-effects":"materials-radiation-effects", "mcubed":"mcubed", "medical-physics":"medical-physics", "microfabricated-systems":"microfabricated-systems", "nanotechnology":"nanotechnology", "natural-disasters":"natural-disasters", "nuclear-energy":"nuclear-energy", "nuclear-non-proliferation":"nuclear-non-proliferation", "oil-gas":"oil-gas", "operations-research-tools":"operations-research-tools", "outreach":"outreach", "plasmas-nuclear-fusion":"plasmas-nuclear-fusion", "polymers-complex-fluids":"polymers-complex-fluids", "precision-health":"precision-health", "profiles":"profiles", "quality-applied-statistics":"quality-applied-statistics", "radiation-measurement-imaging":"radiation-measurement-imaging", "rankings":"rankings", "regenerative-medicine":"regenerative-medicine", "renewable-energy":"renewable-energy", "research-initiatives":"research-initiatives", "risk-management":"risk-management", "robotics-autonomy":"robotics-autonomy", "safety":"safety", "security-defense":"security-defense", "solar-car":"solar-car", "solar-power":"solar-power", "space-systems":"space-systems", "space-weather":"space-weather", "staff":"staff", "state-of-michigan":"state-of-michigan", "structural-hydro-acoustics":"structural-hydro-acoustics", "structures-materials":"structures-materials", "student-organizations":"student-organizations", "sustainability":"sustainability", "sustainable-energy":"sustainable-energy", "undergraduates":"undergraduates", "water":"water", "water-quality":"water-quality", "wireless-systems":"wireless-systems", "yacht-design":"yacht-design"}
+  let event_dict = {"Featured Events, Site Homepage":"sponsors:1151,1087,1121,1143,1308,1398,1471,1510,1519,1669,1689,1703,1746,1754,1763,1771,1800,1819,1843,2896,1937,2088,2154,2271,2281,2283,2294,2355,2427,2509,2588,2593,2676,2718,2793,3041,3103,3153,3172,3197,3215,3218,3245,3262,3264,3283,3286,3294,3297,3301,3320,3325,3333,3409,3525,3539,3646,3650,3737,3841,3942,3986,3987,3988,3989,3990,3992,3993,3994,3995,3996,3997,3998,3999,4000,4001,4002,4059,4062,4065,4071,4073,4110,4111","All Events":"sponsors:1151,1087,1121,1143,1179,1308,1398,1471,1510,1519,1669,1689,1703,1746,1754,1763,1771,1800,1819,1843,2896,1937,2088,2154,2271,2281,2283,2294,2355,2427,2509,2588,2593,2676,2718,2793,3041,3103,3153,3172,3197,3215,3218,3245,3262,3264,3283,3286,3294,3297,3301,3320,3325,3333,3409,3525,3539,3646,3650,3737,3841,3942,3986,3987,3988,3989,3990,3992,3993,3994,3995,3996,3997,3998,3999,4000,4001,4002,4059,4062,4065,4071,4073,4110,4111","College Events (events hosted by the College)":"sponsors:1151 ","All Departments":"sponsors:1143,3103,3153,3197,3218,3245,3301,3320,3539,3942,3988,3989,3997,3999,4000","AERO":"sponsors:3245","BME":"sponsors:1143,1398","CEE":"sponsors:3988","CHE":"sponsors:3218","CLASP":"sponsors:3320","EECS":"sponsors:3989,3153,3197","-CSE (link to from EECS)":"sponsors:3197","-ECE (link to from EECS)":"sponsors:3153","IOE":"sponsors:3301","IS+D":"sponsors:3997","MECH":"sponsors:3539,1896,2283,3264","MSE":"sponsors:3942","NAME":"sponsors:3999","NERS":"sponsors:4000","Academics and Research":"types:5,8,13,21,sponsors:1151,1087,1143,1398,1471,1510,1519,1669,1689,1703,1746,1754,1763,1771,1800,1819,1843,2896,1937,2088,2154,2271,2281,2355,2427,2509,2588,2593,2676,2718,2793,3041,3103,3153,3172,3197,3215,3218,3245,3262,3264,3283,3286,3294,3297,3301,3320,3325,3333,3525,3539,3646,3650,3737,3841,3942,3986,3987,3988,3989,3990,3992,3993,3994,3995,3996,3997,3998,3999,4000,4001,4002,4065,4073","Academic Calendar":"sponsors:1151,tags:Engineering+Academic+Calendar","Lectures, Seminars (Lectures, Seminar Series, Colloquia)":"tags:lecture,collquium,seminar,sponsors:1151,1087,1143,1179,1398,1471,1510,1519,1669,1689,1703,1746,1754,1763,1771,1800,1819,1843,2896,1937,2088,2154,2271,2281,2355,2427,2509,2588,2593,2676,2718,2793,3041,3103,3116,3153,3172,3197,3215,3218,3245,3262,3264,3283,3286,3294,3297,3301,3320,3325,3333,3525,3539,3646,3650,3737,3841,3942,3986,3987,3988,3989,3990,3992,3993,3994,3995,3996,3997,3998,3999,4000,4001,4002,4073","MCubed":"sponsors:3325","Robotics":"sponsors:3998","Community":"tags:Faculty,Staff,Transfer+Students,Undergraduate+Students,Undergraduate,Graduate,Graduate+Students,Michigan+Engineering,Engineering,sponsors:1151,1087,1121,1143,1308,1398,1471,1510,1519,1669,1689,1703,1746,1754,1763,1771,1800,1819,1843,2896,1937,2088,2154,2271,2281,2355,2427,2509,2588,2593,2676,2718,2793,3041,3103,3116,3153,3172,3197,3215,3218,3245,3262,3283,3286,3294,3301,3320,3325,3333,3525,3539,3646,3650,3737,3841,3942,3986,3987,3988,3989,3990,3992,3993,3994,3995,3996,3997,3998,3999,4000,4001,4002,4071,4073,4110,4111","Undergraduate Students":"tags:Undergraduate+Students,Undergraduate,sponsors:1151,1087,1121,1143,1308,1398,1471,1510,1519,1669,1689,1703,1746,1754,1763,1771,1800,1819,1843,2896,1937,2088,2154,2271,2281,2283,2355,2427,2509,2588,2593,2676,2718,2793,3041,3103,3116,3153,3172,3197,3215,3218,3245,3262,3283,3286,3294,3301,3320,3325,3333,3525,3539,3646,3650,3737,3841,3942,3986,3987,3988,3989,3990,3992,3993,3994,3995,3996,3997,3998,3999,4000,4001,4002,4062,4065,4071,4110,4111","Prospective (Future) Undergrads":"tags:Prospective+Undegraduate+Students","Graduate Students":"tags:Graduate,Graduate+Students,Graduate+School,sponsors:1151,1087,1121,1143,1398,1471,1510,1519,1669,1689,1703,1746,1754,1763,1771,1800,1819,1843,2896,1937,2088,2154,2271,2281,2283,2294,2355,2427,2509,2588,2593,2676,2718,2793,3041,3103,3116,3153,3172,3197,3215,3218,3245,3262,3264,3283,3286,3294,3301,3320,3325,3333,3525,3539,3646,3650,3737,3841,3942,3986,3987,3988,3989,3990,3992,3993,3994,3995,3996,3997,3998,3999,4000,4001,4002,4065,4071,4073,4110,4111","Prospective (Future) Grad Students":"tags:Prospective+Graduate+Students","Faculty":"tags:faculty,sponsors:1151,1087,1121,1143,1398,1471,1510,1519,1669,1689,1703,1746,1754,1763,1771,1800,1819,1843,2896,1937,2088,2154,2271,2281,2355,2427,2509,2588,2593,2676,2718,2793,3041,3103,3116,3153,3172,3197,3215,3218,3245,3262,3264,3283,3286,3294,3301,3320,3325,3333,3409,3525,3539,3646,3650,3737,3841,3942,3986,3987,3988,3989,3990,3991,3992,3993,3994,3995,3996,3997,3998,3999,4000,4001,4002,4065","Staff":"tags:staff,sponsors:1151,1087,1121,1143,1398,1471,1510,1519,1669,1689,1703,1746,1754,1763,1771,1800,1819,1843,2896,1937,2088,2154,2271,2281,2355,2427,2509,2588,2593,2676,2718,2793,3041,3103,3116,3153,3172,3197,3215,3218,3245,3262,3283,3286,3294,3297,3301,3320,3325,3333,3409,3525,3539,3646,3650,3737,3841,3942,3986,3987,3988,3989,3990,3991,3992,3993,3994,3995,3996,3997,3998,3999,4000,4001,4002,4065","Alumni and Friends":"tags:alumni,sponsors:1151,1087,1121,1143,1398,1471,1510,1519,1669,1689,1703,1746,1754,1763,1771,1800,1819,1843,2896,1937,2088,2154,2271,2281,2355,2427,2509,2588,2593,2676,2718,2793,3041,3103,3116,3153,3172,3197,3215,3218,3245,3262,3283,3286,3294,3297,3301,3320,3325,3333,3409,3525,3539,3646,3650,3737,3841,3942,3986,3987,3988,3989,3990,3991,3992,3993,3994,3995,3996,3997,3998,3999,4000,4001,4002,4111"}
+  /* When the user clicks on the button,
+    toggle between hiding and showing the dropdown content */
+
+  let def_dept = "Select a Department";
+  let def_res = "Select a Research";
+  let def_cc = "Select Campus and Comm";
+  let def_tags = "Select a tag";
+  let def_event = "Select an event";
+
+  window.onload = function () { 
+      document.getElementById("1-insert1").innerHTML = generateSelection(1, dept_dict, def_dept);
+      document.getElementById("1-insert2").innerHTML = generateSelection(2, res_dict, def_res);
+      document.getElementById("1-insert3").innerHTML = generateSelection(3, cc_dict, def_cc);
+
+      document.getElementById("2-insert1").innerHTML = generateSelection(4, dept_dict, def_dept);
+      document.getElementById("2-insert4").innerHTML = generateSelection(5, tags_dict, def_tags);
+
+      document.getElementById("3-insert1").innerHTML = generateSelection(6, event_dict, def_event);
+  }
+
+  $( document ).ready(function() {
+      $("#tool-one").click(() => {
+        var url = ""
+        let dept = document.getElementById("buttonId1").innerHTML;
+        let res = document.getElementById("buttonId2").innerHTML;
+        let cc = document.getElementById("buttonId3").innerHTML;
+        if (dept == def_dept && res == def_res && cc == def_cc){
+          url = "https://news.engin.umich.edu/wp-json/wp/v2/posts"
+        }
+        else{
+          if (res != def_res && cc != def_cc){
+            url = "You cannot select Research and Campus & Community at the same time"
+          }
+          else{
+            if (dept == def_dept){
+              if (res != def_res){
+                url = "https://news.engin.umich.edu/wp-json/wp/v2/posts?filter[category_name]=research/" + res_dict[res]
+              }
+              else if (cc != def_cc){
+                url = "https://news.engin.umich.edu/wp-json/wp/v2/posts?filter[category_name]=campus-comm/" + cc_dict[cc]
+              }
+              else{
+                url = "unknown error"
+              }
+            }
+            else{
+              if (res != def_res){
+                if (res != "All"){
+                  url = "https://news.engin.umich.edu/wp-json/menc/v1/crosscat/" + dept_dict[dept] + "/" + res_dict[res]
+                }
+                else{
+                  url = "https://news.engin.umich.edu/wp-json/wp/v2/posts?filter[category_name]=dept/" + dept_dict[dept]
+                }
+              }
+              else if(cc != def_cc){
+                if (cc != "All"){
+                  url = "https://news.engin.umich.edu/wp-json/menc/v1/crosscat/" + dept_dict[dept] + "/" + cc_dict[cc]
+                }
+                else{
+                  url = "https://news.engin.umich.edu/wp-json/wp/v2/posts?filter[category_name]=dept/" + dept_dict[dept]
+                }
+              }
+              else{
+                url = "https://news.engin.umich.edu/wp-json/wp/v2/posts?filter[category_name]=dept/" + dept_dict[dept]
+              }
+            }
+          }
+        }
+        url_disp = '<div class="well well-disp">' + url + '</div>'
+        $("#url-one").html(url_disp);
+      });
+      $("#tool-two").click(() => {
+        var url = "";
+        let dept = document.getElementById("buttonId4").innerHTML;
+        let tag = document.getElementById("buttonId5").innerHTML;
+        if (dept == def_dept){
+          if (tag == def_tags){
+            url = "https://news.engin.umich.edu/wp-json/wp/v2/posts"
+          }
+          else{
+            url = "https://news.engin.umich.edu/wp-json/wp/v2/posts?filter[tag]=" + tags_dict[tag]
+          }
+        }
+        else{
+          if (tag == def_tags){
+            url = "https://news.engin.umich.edu/wp-json/wp/v2/posts?filter[category_name]=dept/" + dept_dict[dept]
+          }
+          else{
+            url = "https://newsdev.engin.umich.edu/wp-json/menc/v1/crosstag/" + dept_dict[dept] + "/" + tags_dict[tag]
+          }
+        }
+        url_disp = '<div class="well well-disp">' + url + '</div>'
+        $("#url-two").html(url_disp);
+      });
+      $("#tool-three").click(() => {
+        var url = "";
+        let event = document.getElementById("buttonId6").innerHTML;
+        if (event == def_event){
+          url = event_dict["All Events"]
+        }
+        else{
+          url = event_dict[event]
+        }
+        url = "https://events.engin.umich.edu/wp-json/events/v1/event_listing?filter=" + url 
+        url_disp = '<div class="well well-disp">' + url + '</div>'
+        $("#url-three").html(url_disp);
+      });
+  });
+
+  function generateSelection(number, dict, initMes) {
+      dropdownId = "dropdownId"+number
+      inputId = "inputId"+number
+      buttonId = "buttonId"+number
+      list = ''
+      for (var key in dict) {
+          list += `<a onclick="changeButtonContent('`+buttonId+`', '`+key+`')">`+key+`</a>\n`
+      }
+      innerStr = `
+        <div class="dropdown">
+          <button id="`+buttonId+`" onclick="toggleFunction('`+dropdownId+`')" class="dropbtn">`+initMes+`</button>
+          <div id="`+dropdownId+`" class="dropdown-content">
+            <input id="`+inputId+`" class="dropdown-input" type="text" placeholder="Search.." onkeyup="filterFunction('`+dropdownId+`','`+inputId+`')">
+            <div>
+              `+list+`
+            </div>
+          </div>
+        </div>
+      `
+      return innerStr
+  }
+
+  $(document).click(function(event) { 
+      if(!$(event.target).closest('.dropdown').length) {
+          if($('.dropdown').children(":last-child").is(":visible")) {
+              $('.dropdown').children(":last-child").hide();
+          }
+      }        
+  });
+
+  function changeButtonContent(button_id, content){
+      $('#'+button_id).html(content);
+      $('.dropdown').children(":last-child").hide();
+      return false;
+  }
+
+  function toggleFunction(dropdown_id) {
+      $('#'+dropdown_id).toggle();
+  }
+
+  function filterFunction(dropdown_id, input_id) {
+      var input, filter, ul, li, a, i;
+      input = document.getElementById(input_id);
+      filter = input.value.toUpperCase();
+      div = document.getElementById(dropdown_id);
+      a = div.getElementsByTagName("a");
+      for (i = 0; i < a.length; i++) {
+          if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+              a[i].style.display = "";
+          } else {
+              a[i].style.display = "none";
+          }
+      }
+  }
+</script>
+
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container text-center">
+    <h2 class="display-3">News and Events URL Generator</h2>
+  </div>
+</div>
+
+<div class="container">
+  <!-- begin of the tool section -->
+  <div class="panel-group" id="accordion">
+    <!-- The first tool -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+          Filter news without tags</a>
+        </h4>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse in">
+        <!-- Begin of the tool -->
+        <div class="boxing">
+          <p>You can choose any combinations of the filters, expect that you cannot choose Research and Campus & Community at the sametime. Leave all choice to default to indicate that you want all news. </p>
+          <div class="row">
+            <div class="col-md-3">
+              <div id="1-insert1"></div>
+            </div>
+            <div class="col-md-3">
+              <div id="1-insert2"></div>
+            </div>
+            <div class="col-md-3">
+              <div id="1-insert3"></div>
+            </div>
+            <div class="col-md-3">
+              <button id="tool-one" class="generatebtn"> Generate URL</button>
+            </div>
+          </div>
+          <div class="row">
+            <div id="url-one" class="col-md-12"></div>
+          </div>
+        </div>
+        <!-- End of the tool -->
+      </div>
+    </div>
+    <!-- The second tool -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+          Filter news with tags</a>
+        </h4>
+      </div>
+      <div id="collapse2" class="panel-collapse collapse">
+        <!-- Begin of the tool -->
+        <div class="boxing">
+          <p>You can choose any combinations of the filters. Leave all choice to default to indicate that you want all news. </p>
+          <div class="row">
+            <div class="col-md-4">
+              <div id="2-insert1"></div>
+            </div>
+            <div class="col-md-4">
+              <div id="2-insert4"></div>
+            </div>
+            <div class="col-md-4">
+              <button id="tool-two" class="generatebtn"> Generate URL</button>
+            </div>
+          </div>
+          <div class="row">
+            <div id="url-two" class="col-md-12"></div>
+          </div>
+        </div>
+        <!-- End of the tool -->
+      </div>
+    </div>
+    <!-- The third tool -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+          Event URL Generator</a>
+        </h4>
+      </div>
+      <div id="collapse3" class="panel-collapse collapse">
+        <!-- Begin of the tool -->
+        <div class="boxing">
+          <p> </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div id="3-insert1"></div>
+            </div>
+            <div class="col-md-6">
+              <button id="tool-three" class="generatebtn"> Generate URL</button>
+            </div>
+          </div>
+          <div class="row">
+            <div id="url-three" class="col-md-12"></div>
+          </div>
+        </div>
+        <!-- End of the tool -->
+      </div>
+    </div>
+  </div>
+  <!-- The first tool -->
+  
+
+</div>
+</body>
+</html>
