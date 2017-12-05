@@ -16,23 +16,39 @@ crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
 crossorigin="anonymous"></script>
+<!-- FontAwesome JavaScript -->
+<script src="https://use.fontawesome.com/7c44528901.js"></script>
+
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <!-- CSS writen by Zihan Li -->
 <style>
+  body {
+    background:#edf3f8;
+  }
   .dropbtn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 14px;
-      font-size: 16px;
-      border: none;
+      border:1px solid #00274c;
+      border-radius:2px;
+      font-size:16px;
+      background-color: white;
+      color:#00274c;
+      padding: 10px 12px 10px 3px;
       cursor: pointer;
       width: 100%;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 800;
   }
 
+  .dropbtn:before {
+    content: "\25BE";  
+    right:5px;
+    position:absolute;
+    top:10px;
+ }
+
   .dropbtn:hover, .dropbtn:focus {
-      background-color: #3e8e41;
+      background-color: #EDEDED;
   }
   .dropdown-input {
-      border-box: box-sizing;
       width: 100%;
       font-size: 16px;
       padding: 14px 20px 12px 20px;
@@ -65,31 +81,117 @@ crossorigin="anonymous"></script>
 
   .dropdown a:hover {background-color: #ddd}
 
+  .dropdown-p {
+    margin-top: 25px;
+    margin-bottom: 2px;
+    font-size: 12px;
+  }
 
   .generatebtn {
-      background-color: #4C50AF;
+      border:1px solid #00b2a9;
+      border-radius:2px;
+      font-size:16px;
+      background-color: #00b2a9;
       color: white;
-      padding: 14px;
-      font-size: 16px;
-      border: none;
+      padding: 10px 3px 10px 3px;
       cursor: pointer;
       width: 100%;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 800;
+  }
+
+  .resetbtn {
+      border:1px solid #9a3324;
+      border-radius:2px;
+      background:#9a3324;
+      color: white;
+      padding: 10px 0px 10px 0px;
+      cursor: pointer;
+      width: 100%;
+  }
+
+  .copybtn {
+      border:1px solid #aabdcd;
+      border-radius:2px;
+      background:#aabdcd;
+      padding: 10px 10px 10px 10px;
+      cursor: pointer;
+      width: 100%;
+  }
+
+  .generatebtn:hover, .generatebtn:focus {
+      background-color: #009289;
+      border:1px solid #009289;
+  }
+
+  .resetbtn:hover, .resetbtn:focus {
+      background-color: #ca5344;
+      border:1px solid #ca5344;
+  }
+
+  .copybtn:hover, .copybtn:focus {
+      background-color: #9aadbd;
+      border:1px solid #9aadbd;
+  }
+
+  .nohover:hover {
+      background-color: white !important;
   }
 
   .boxing {
     margin: 20px;
   }
 
-  .generatebtn:hover, .generatebtn:focus {
-      background-color: #3e418e;
-  }
-
   .well-disp {
-    margin-top: 20px;
-    margin-bottom: 0px;
+    background:#edf3f8;
+    border:1px solid #aabdcd;
+    border-radius:2px;
+    font-size:16px;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    word-break:break-all;
+    font-size:16px;
+    color:#464b4f;
+    text-align:left;
   }
 
-  .well { word-break:break-all; }
+  .michigan-title {
+    top: 0px;
+    left: 0px;
+    padding: 10px 10px 10px 10px;
+    background-color: #00274C;
+  }
+
+  .panel-default {
+    border-radius: 0px !important;
+    /*border-color: #48648E !important;*/
+  }
+
+  .panel-heading {
+    margin-top: -1px;
+    margin-left: -2px;
+    margin-right: -2px;
+    border-color: #48648E !important;
+    border-radius: 0px !important;
+    background-color: #48648E !important;
+  }
+
+  .panel-title {
+    color: white;
+  }
+
+  .tool-title {
+    position: inline;
+    font-size:24px;
+    color:#00274c;
+    background:#e2edf6;
+    padding: 10px 10px 10px 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 800;
+  }
+
+
 </style>
 <!-- Script writen by Zihan Li -->
 <script>
@@ -102,11 +204,11 @@ crossorigin="anonymous"></script>
   /* When the user clicks on the button,
     toggle between hiding and showing the dropdown content */
 
-  let def_dept = "Select a Department";
-  let def_res = "Select a Research";
-  let def_cc = "Select Campus and Comm";
-  let def_tags = "Select a tag";
-  let def_event = "Select an event";
+  let def_dept = "DEPARTMENT";
+  let def_res = "RESEARCH AREA";
+  let def_cc = "COMMUNITY";
+  let def_tags = "TAGS";
+  let def_event = "EVENT";
 
   window.onload = function () { 
       document.getElementById("1-insert1").innerHTML = generateSelection(1, dept_dict, def_dept);
@@ -117,6 +219,11 @@ crossorigin="anonymous"></script>
       document.getElementById("2-insert4").innerHTML = generateSelection(5, tags_dict, def_tags);
 
       document.getElementById("3-insert1").innerHTML = generateSelection(6, event_dict, def_event);
+  }
+
+  function dis_url(id, url) {
+    $(id).html(url);
+    $("#"+id.substr(5)).show();
   }
 
   $( document ).ready(function() {
@@ -167,8 +274,9 @@ crossorigin="anonymous"></script>
             }
           }
         }
-        url_disp = '<div class="well well-disp">' + url + '</div>'
-        $("#url-one").html(url_disp);
+        dis_url("#res-url-one", url)
+        $child=$("#copy-url-one").children();
+        $child.addClass("fa-clipboard").removeClass("fa-check");
       });
       $("#tool-two").click(() => {
         var url = "";
@@ -190,8 +298,9 @@ crossorigin="anonymous"></script>
             url = "https://newsdev.engin.umich.edu/wp-json/menc/v1/crosstag/" + dept_dict[dept] + "/" + tags_dict[tag]
           }
         }
-        url_disp = '<div class="well well-disp">' + url + '</div>'
-        $("#url-two").html(url_disp);
+        dis_url("#res-url-two", url)
+        $child=$("#copy-url-two").children();
+        $child.addClass("fa-clipboard").removeClass("fa-check");
       });
       $("#tool-three").click(() => {
         var url = "";
@@ -203,20 +312,80 @@ crossorigin="anonymous"></script>
           url = event_dict[event]
         }
         url = "https://events.engin.umich.edu/wp-json/events/v1/event_listing?filter=" + url 
-        url_disp = '<div class="well well-disp">' + url + '</div>'
-        $("#url-three").html(url_disp);
+        dis_url("#res-url-three", url)
+        $child=$("#copy-url-three").children();
+        $child.addClass("fa-clipboard").removeClass("fa-check");
+      });
+      $(".a-click").click(function(){
+          $child=$(this).siblings('i:nth-child(1)');
+          $child.toggleClass("fa-caret-down").toggleClass("fa-caret-up");
+      });
+      $("#reset-one").click(() => {
+        $("#buttonId1").html(def_dept);
+        $("#buttonId2").html(def_res);
+        $("#buttonId3").html(def_cc);
+        $("#url-one").hide();
+        $child=$("#copy-url-one").children();
+        $child.addClass("fa-clipboard").removeClass("fa-check");
+        if (state != 0){
+          disablecolor_vis(5-state, false)
+          state = 0
+        }
+      });
+      $("#reset-two").click(() => {
+        $("#buttonId4").html(def_dept);
+        $("#buttonId5").html(def_tags);
+        $("#url-two").hide();
+        $child=$("#copy-url-two").children();
+        $child.addClass("fa-clipboard").removeClass("fa-check");
+      });
+      $("#reset-three").click(() => {
+        $("#buttonId6").html(def_event);
+        $("#url-three").hide();
+        $child=$("#copy-url-two").children();
+        $child.addClass("fa-clipboard").removeClass("fa-check");
+      });
+      /////////////////////////////////////////////////////////
+      $("#copy-url-one").click(() => {
+        copy_url_clip("#res-url-one")
+        $child=$("#copy-url-one").children();
+        $child.removeClass("fa-clipboard").addClass("fa-check");
+      });
+      $("#copy-url-two").click(() => {
+        copy_url_clip("#res-url-two")
+        $child=$("#copy-url-two").children();
+        $child.removeClass("fa-clipboard").addClass("fa-check");
+      });
+      $("#copy-url-three").click(() => {
+        copy_url_clip("#res-url-three")
+        $child=$("#copy-url-three").children();
+        $child.removeClass("fa-clipboard").addClass("fa-check");
       });
   });
+
+  function copy_url_clip(id) {
+    var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(id).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+  }
+
+  function toTitleCase(str) {
+      return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+  }
 
   function generateSelection(number, dict, initMes) {
       dropdownId = "dropdownId"+number
       inputId = "inputId"+number
       buttonId = "buttonId"+number
+      labelId = "labelId"+number
       list = ''
       for (var key in dict) {
           list += `<a onclick="changeButtonContent('`+buttonId+`', '`+key+`')">`+key+`</a>\n`
       }
       innerStr = `
+        <div id="`+labelId+`" class="dropdown-p"> Select `+toTitleCase(initMes.toLowerCase())+`:</div>
         <div class="dropdown">
           <button id="`+buttonId+`" onclick="toggleFunction('`+dropdownId+`')" class="dropbtn">`+initMes+`</button>
           <div id="`+dropdownId+`" class="dropdown-content">
@@ -229,6 +398,7 @@ crossorigin="anonymous"></script>
       `
       return innerStr
   }
+  
 
   $(document).click(function(event) { 
       if(!$(event.target).closest('.dropdown').length) {
@@ -238,7 +408,38 @@ crossorigin="anonymous"></script>
       }        
   });
 
+  var state = 0;
+
+  function disablecolor_vis(id, disable){
+    if(disable){
+      $("#dropdownId"+id).css({"visibility":"hidden"})
+      $("#buttonId"+id).css({"color":"gray", "border-color":"gray"})
+      $("#labelId"+id).css({"color":"gray"})
+      $("#buttonId"+id).addClass("nohover");
+    }
+    else{
+      $("#dropdownId"+id).css({"visibility":"visible"})
+      $("#buttonId"+id).css({"color":"#00274c", "border-color":"#00274c"})
+      $("#labelId"+id).css({"color":"black"})
+      $("#buttonId"+id).removeClass("nohover");
+    }
+  }
+
   function changeButtonContent(button_id, content){
+      if (button_id == "buttonId2"){
+        if (state == 3){
+          return false;
+        }
+        disablecolor_vis(3, true)
+        state = 2
+      }
+      else if (button_id == "buttonId3"){
+        if (state == 2){
+          return false;
+        }
+        disablecolor_vis(2, true)
+        state = 3
+      }
       $('#'+button_id).html(content);
       $('.dropdown').children(":last-child").hide();
       return false;
@@ -267,27 +468,29 @@ crossorigin="anonymous"></script>
 </head>
 <body>
 
-<div class="jumbotron">
-  <div class="container text-center">
-    <h2 class="display-3">News and Events URL Generator</h2>
-  </div>
+<div class="michigan-title"> 
+
+  <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9InVtaWNoLWVuZ2luLWxvZ28iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSItMTI4IDM3OS45IDM1NC45IDM1LjEiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgLTEyOCAzNzkuOSAzNTQuOSAzNS4xIiB4bWw6c3BhY2U9InByZXNlcnZlIj48ZyBpZD0ibWljaC1lbmdpbiI+PHBhdGggaWQ9Im0iIGZpbGw9IiNGRkZGRkYiIGQ9Ik0tNTcuOCwzODIuN0wtNTcuOCwzODIuN2w2LDE5LjNoMi42bDYuMS0xOS4zaDAuMVY0MDJoMi44di0yMS43aC00LjZsLTUuNSwxOC4yaC0wLjFsLTUuNS0xOC4yaC00LjVWNDAyaDIuNkwtNTcuOCwzODIuN0wtNTcuOCwzODIuN3oiLz48cGF0aCBpZD0iaWNoIiBmaWxsPSIjRkZGRkZGIiBkPSJNLTM2LjQsMzgwLjNoMi44VjQwMmgtMi44VjM4MC4zeiBNLTE3LjQsMzg2LjNjMC4zLTQuMi0xLjQtNi40LTUuNy02LjRjLTQuMywwLTcsMS43LTcsNy45djYuMWMwLDguNCw0LjEsOC42LDYuOCw4LjZjMS40LDAsNi4yLDAsNi4xLTYuOGgtMi45YzAsNC4yLTIuNiw0LjUtMy40LDQuNWMtMi4xLDAtMy45LTAuNi0zLjktNS45di01LjhjMC0zLjcsMC41LTQuMywwLjYtNC41YzAuMS0wLjMsMS0xLjcsMy4zLTEuN2MwLjYsMCwxLjksMC4yLDIuNCwwLjljMC42LDAuNywwLjcsMS45LDAuNiwzLjFDLTIwLjMsMzg2LjMtMTcuNCwzODYuMy0xNy40LDM4Ni4zeiBNLTExLjUsNDAydi05LjloNy42djkuOWgyLjh2LTIxLjdoLTIuOHY5LjRoLTcuNnYtOS40aC0yLjhWNDAySC0xMS41eiIvPjxwYXRoIGlkPSJpZ2FuLWVuZyIgZmlsbD0iI0ZGRkZGRiIgZD0iTTIuOSwzODAuM2gyLjhWNDAySDIuOVYzODAuM3ogTTIyLjgsMzg2LjFjMC4yLTQuNS0yLTYuMi02LjctNi4yYy00LjYsMC02LjgsMi44LTYuOCw3LjF2Ny4xYzAsNiwyLjIsOC40LDYuOCw4LjRjMi44LDAsNC45LTAuNyw2LjYtMS42di0xMC41aC02Ljh2Mi40aDR2Ni41Yy0wLjYsMC40LTEuOSwxLTMuOSwxYy0yLjYsMC00LTEuMi00LTUuOXYtNy4zYzAtNC41LDMuMS00LjcsNC00LjdjMi44LDAsMy44LDEuNCwzLjgsMy45QzE5LjksMzg2LjEsMjIuOCwzODYuMSwyMi44LDM4Ni4xeiBNMjQuNSw0MDJoMi44bDEuNi01LjJoOC40bDEuNiw1LjJoMy4xbC03LjEtMjEuN2gtMy41TDI0LjUsNDAyTDI0LjUsNDAyeiBNMzYuNSwzOTQuNGgtNi45bDMuNC0xMS41SDMzTDM2LjUsMzk0LjR6IE01NiwzODAuM3YxOC41aC0wLjFsLTguNC0xOC41aC0zLjlWNDAyaDIuNXYtMTguOGgwLjFsOC42LDE4LjhoMy44di0yMS43QzU4LjUsMzgwLjMsNTYsMzgwLjMsNTYsMzgwLjN6IE04MS44LDQwMnYtMi40aC04LjZ2LTcuNUg4MXYtMi40aC03Ljh2LTdoOC40di0yLjRINzAuNFY0MDJIODEuOHogTTk2LjYsMzgwLjN2MTguNWgtMC4xbC04LjQtMTguNWgtMy45VjQwMmgyLjV2LTE4LjhoMC4xbDguNiwxOC44aDMuOHYtMjEuN0g5Ni42TDk2LjYsMzgwLjN6IE0xMTYsMzg2LjFjMC4yLTQuNS0yLTYuMi02LjctNi4yYy00LjYsMC02LjgsMi44LTYuOCw3LjF2Ny4xYzAsNiwyLjIsOC40LDYuOCw4LjRjMi44LDAsNC45LTAuNyw2LjYtMS42di0xMC41aC02Ljd2Mi40aDR2Ni41Yy0wLjYsMC40LTEuOSwxLTMuOSwxYy0yLjYsMC00LTEuMi00LTUuOXYtNy4zYzAtNC41LDMuMS00LjcsNC00LjdjMi44LDAsMy44LDEuNCwzLjgsMy45SDExNkwxMTYsMzg2LjF6Ii8+PHBhdGggaWQ9ImluZWVyIiBmaWxsPSIjRkZGRkZGIiBkPSJNMTIwLjEsMzgwLjNoMi44VjQwMmgtMi44VjM4MC4zeiBNMTM5LjMsMzgwLjN2MTguNWgtMC4xbC04LjQtMTguNWgtMy45VjQwMmgyLjV2LTE4LjhoMC4xbDguNSwxOC44aDMuOHYtMjEuN0gxMzkuM0wxMzkuMywzODAuM3ogTTE1Ni43LDQwMnYtMi40aC04LjZ2LTcuNWg3Ljh2LTIuNGgtNy44di03aDguNHYtMi40aC0xMS4yVjQwMkgxNTYuN3ogTTE3MC40LDQwMnYtMi40aC04LjZ2LTcuNWg3Ljh2LTIuNGgtNy44di03aDguNHYtMi40SDE1OVY0MDJIMTcwLjR6IE0xNzUuNCwzODIuN2g0LjJjMi4xLDAsMi45LDEuNywyLjksMy4zYzAsMS45LTEsMy42LTIuOSwzLjZoLTQuMUwxNzUuNCwzODIuN0wxNzUuNCwzODIuN3ogTTE3OC42LDM5MmMwLjksMCwzLjEsMC4xLDMuMywyLjhjMC4yLDIuOSwwLjEsNS43LDAuOCw3LjJoMi45Yy0wLjQtMS40LTAuNy00LjctMC43LTUuN2MtMC4yLTQuNC0xLTUuMi0zLjUtNS42di0wLjFjMi41LTAuNCw0LTIuNCw0LTQuOWMwLTIuNy0xLjQtNS40LTUuMi01LjRoLTcuNVY0MDJoMi44di0xMEwxNzguNiwzOTJMMTc4LjYsMzkyeiIvPjxwYXRoIGlkPSJpbmciIGZpbGw9IiNGRkZGRkYiIGQ9Ik0xODguNCwzODAuM2gyLjhWNDAyaC0yLjhWMzgwLjN6IE0yMDcuNSwzODAuM3YxOC41aC0wLjFsLTguNC0xOC41aC0zLjlWNDAyaDIuNXYtMTguOGgwLjFsOC41LDE4LjhoMy44di0yMS43SDIwNy41TDIwNy41LDM4MC4zeiBNMjI2LjksMzg2LjFjMC4yLTQuNS0yLTYuMi02LjctNi4yYy00LjYsMC02LjgsMi44LTYuOCw3LjF2Ny4xYzAsNiwyLjIsOC40LDYuOCw4LjRjMi44LDAsNC45LTAuNyw2LjYtMS42di0xMC41aC02Ljd2Mi40aDR2Ni41Yy0wLjYsMC40LTEuOSwxLTMuOSwxYy0yLjYsMC00LTEuMi00LTUuOXYtNy4zYzAtNC41LDMuMS00LjcsNC00LjdjMi44LDAsMy44LDEuNCwzLjgsMy45SDIyNi45TDIyNi45LDM4Ni4xeiIvPjwvZz48Zz48cGF0aCBpZD0iYmxvY2stbSIgZmlsbD0iI0ZGQ0YwMSIgZD0iTS0xMDMuOCw0MDguOGwtOS45LTEzLjZ2OS45aDMuOXY5LjdILTEyOHYtOS43aDMuN3YtMTUuMmgtMy43di05LjdoMTQuM2w5LjksMTMuN2w5LjktMTMuN2gxNC4zdjkuN2gtMy43djE1LjJoMy43djkuN2gtMTguM3YtOS43aDMuOXYtOS45Qy05My44LDM5NS4yLTEwMy44LDQwOC44LTEwMy44LDQwOC44eiIvPjxwYXRoIGlkPSJ1bWljaCIgZmlsbD0iI0ZGRkZGRiIgZD0iTTc3LjMsNDE0Ljh2LTAuNGMwLjUsMCwwLjktMC4xLDAuOS0wLjVjMC0wLjEsMC0wLjMtMC4xLTAuNGwtMC4yLTAuN2gtMi42bC0wLjIsMC42YzAsMC4yLTAuMSwwLjMtMC4xLDAuNWMwLDAuNSwwLjUsMC42LDEsMC42djAuNGgtM3YtMC40YzAuOCwwLDEtMC4yLDEuMy0xbDItNS40bC0wLjEtMC4yYzAuOS0wLjMsMS4xLTAuNCwxLjUtMC43bDAuMywxLjFsMS42LDVjMC4zLDAuOSwwLjQsMS4xLDEuMiwxLjJ2MC40TDc3LjMsNDE0LjhDNzcuMyw0MTQuOCw3Ny4zLDQxNC44LDc3LjMsNDE0Ljh6IE03Ni42LDQwOC45bC0xLjEsM2gyLjFMNzYuNiw0MDguOUw3Ni42LDQwOC45eiBNNTEuMSw0MTMuMmMtMC4zLDAuNS0xLjEsMS44LTMuMSwxLjhjLTIuMiwwLTMuNi0xLjYtMy42LTMuOGMwLTIsMS4yLTMuOSwzLjctMy45YzEuMywwLDIsMC41LDIuNCwwLjlsMC41LTAuNWwwLDIuMmwtMC4zLDAuMWMtMC4xLTAuNC0wLjMtMC44LTAuOC0xLjNjLTAuMi0wLjItMC44LTAuNy0xLjUtMC43Yy0xLjMsMC0yLjQsMS4xLTIuNCwzYzAsMS42LDAuOSwzLjEsMi42LDMuMWMxLjMsMCwxLjgtMC43LDIuMS0xLjNMNTEuMSw0MTMuMkw1MS4xLDQxMy4yeiBNNTIuMyw0MTQuOHYtMC40YzAuOC0wLjEsMC44LTAuMiwwLjgtMWMwLTAuMywwLTAuNSwwLTAuOHYtMy4xYzAtMC41LDAtMSwwLTEuMmMwLTAuNC0wLjItMC41LTAuOC0wLjZ2LTAuNGgzLjF2MC40Yy0wLjYsMC4xLTAuOCwwLjEtMC45LDAuNWMtMC4xLDAuMi0wLjEsMC44LTAuMSwxLjJ2MWMwLjYsMCwxLjEsMC4xLDEuNywwLjFjMC42LDAsMS4xLDAsMS43LTAuMXYtMS4yYzAtMS4zLDAtMS40LTEtMS41di0wLjRoMy4ydjAuNGMtMC45LDAuMS0wLjksMC4xLTAuOSwxLjV2My4xYzAsMC4zLDAsMS4yLDAsMS40YzAuMSwwLjQsMC4zLDAuNSwwLjgsMC41djAuNGgtMy4ydi0wLjRjMC43LTAuMSwwLjktMC4xLDEtMC42YzAtMC4yLDAtMC41LDAtMXYtMS4zYy0wLjYsMC0xLjEtMC4xLTEuNy0wLjFjLTAuNiwwLTEuMSwwLTEuOCwwLjF2MS4zYzAsMS41LDAsMS41LDEsMS42djAuNEw1Mi4zLDQxNC44TDUyLjMsNDE0LjhMNTIuMyw0MTQuOHogTTYxLjQsNDE0Ljh2LTAuNGMwLjctMC4xLDAuOS0wLjIsMC45LTAuOXYtMy45YzAtMS41LDAtMS42LTAuOS0xLjd2LTAuNGgzLjF2MC40Yy0wLjksMC4xLTAuOSwwLjEtMC45LDEuN3YzYzAsMC4zLDAsMS4xLDAsMS4zYzAsMC40LDAuMywwLjYsMC44LDAuNnYwLjRINjEuNEw2MS40LDQxNC44eiBNNDAuNSw0MTQuOHYtMC40YzAuNy0wLjEsMC45LTAuMiwwLjktMC45di0zLjljMC0xLjUsMC0xLjYtMC45LTEuN3YtMC40aDN2MC40Yy0wLjksMC4xLTAuOSwwLjEtMC45LDEuN3YzYzAsMC4zLDAsMS4xLDAsMS4zYzAuMSwwLjQsMC4zLDAuNiwwLjgsMC42djAuNEg0MC41TDQwLjUsNDE0Ljh6IE0zNS44LDQxNC44di0wLjRjMC45LTAuMSwwLjktMC4xLDAuOS0xLjV2LTMuN2wtMi42LDUuNmgtMC42bC0yLjQtNS43bC0wLjEsNC4zYzAsMC43LDAuMSwwLjksMC45LDAuOXYwLjRoLTIuNXYtMC40YzAuNiwwLDAuOC0wLjEsMC45LTAuNmMwLTAuMiwwLjEtMC44LDAuMS0xLjJsMC4xLTMuMWMwLTAuMiwwLTAuNiwwLTAuOWMwLTAuNy0wLjEtMC44LTAuOC0wLjh2LTAuNEgzMmwyLjMsNS42bDIuNS01LjZoMi4ydjAuNGMtMC45LDAuMS0wLjksMC4xLTAuOSwxLjN2M2MwLDAuNSwwLDEuMSwwLDEuNWMwLDAuNSwwLjIsMC42LDAuOCwwLjd2MC40TDM1LjgsNDE0LjhDMzUuOCw0MTQuOCwzNS44LDQxNC44LDM1LjgsNDE0Ljh6IE04MS4yLDQxNC44di0wLjRjMC42LDAsMC44LDAsMC45LTAuNWMwLjEtMC41LDAuMS00LjgsMC4xLTUuNmMtMC40LTAuNC0wLjYtMC40LTEuMS0wLjV2LTAuNGgyLjJjMC42LDAuOSwwLjcsMS4xLDEuOCwyLjRsMiwyLjV2LTMuM2MwLTEuMiwwLTEuMi0xLjItMS4zdi0wLjRIODl2MC40Yy0wLjgsMC0wLjksMC4yLTAuOSwxLjRsLTAuMSw1LjdoLTAuNGwtMC43LTAuOGMtMC4zLTAuNC0wLjctMC44LTEtMS4ybC0yLjktMy42djMuOGMwLDEuMiwwLjEsMS4yLDEuMiwxLjN2MC40TDgxLjIsNDE0LjhMODEuMiw0MTQuOHogTTIwLDQxMS4xYzAsMi41LTEuNywzLjktMy43LDMuOWMtMi4xLDAtMy44LTEuNS0zLjgtMy45YzAtMiwxLjMtMy44LDMuNy0zLjhDMTguNCw0MDcuMywyMCw0MDguOSwyMCw0MTEuMXogTTE2LjMsNDE0LjNjMC40LDAsMS0wLjIsMS41LTAuOWMwLjUtMC44LDAuNi0xLjUsMC42LTIuNWMwLTAuOS0wLjMtMS44LTAuOC0yLjNjLTAuMi0wLjItMC43LTAuNi0xLjMtMC42Yy0wLjYsMC0xLjEsMC40LTEuMywwLjZjLTAuNSwwLjYtMC44LDEuNC0wLjgsMi40YzAsMSwwLjEsMS43LDAuNywyLjVDMTUuMyw0MTQuMSwxNS45LDQxNC4zLDE2LjMsNDE0LjNMMTYuMyw0MTQuM3ogTTIwLjcsNDE0LjR2MC40aDN2LTAuNGMtMC44LTAuMS0wLjktMC4xLTAuOS0wLjlsMC0yLjFoMC44YzAuOCwwLDEuMywwLjEsMS4zLDAuOWgwLjR2LTIuNEgyNWMwLDAuOC0wLjMsMC45LTEuMiwwLjloLTF2LTIuNWMwLjMsMCwwLjQsMCwwLjksMGMxLjQsMCwxLjksMCwyLjEsMS4xaDAuNGwtMC4xLTEuOGgtNS40djAuNGMwLjUsMC4xLDAuOCwwLjEsMC44LDAuNGMwLDAuMiwwLjEsMSwwLjEsMS4zdjIuNmMwLDAuMiwwLDEuMSwwLDEuM0MyMS42LDQxNC4zLDIxLjUsNDE0LjMsMjAuNyw0MTQuNEwyMC43LDQxNC40eiBNLTQyLjQsNDE0Ljh2LTAuNGMwLjctMC4xLDAuOS0wLjIsMC45LTAuOXYtMy45YzAtMS41LDAtMS42LTAuOS0xLjd2LTAuNGgzdjAuNGMtMC45LDAuMS0wLjksMC4xLTAuOSwxLjd2M2MwLDAuMywwLDEuMSwwLDEuM2MwLDAuNCwwLjMsMC42LDAuOCwwLjZ2MC40TC00Mi40LDQxNC44Qy00Mi40LDQxNC44LTQyLjQsNDE0LjgtNDIuNCw0MTQuOHogTS0xMC4xLDQxNC44di0wLjRjMC43LTAuMSwwLjktMC4yLDAuOS0wLjl2LTMuOWMwLTEuNSwwLTEuNi0wLjktMS43di0wLjRoM3YwLjRjLTAuOSwwLjEtMC45LDAuMS0wLjksMS43djNjMCwwLjMsMCwxLjEsMCwxLjNjMCwwLjQsMC4zLDAuNiwwLjgsMC42djAuNEwtMTAuMSw0MTQuOEMtMTAuMSw0MTQuOC0xMC4xLDQxNC44LTEwLjEsNDE0Ljh6IE0tNTEuMyw0MTQuOHYtMC40YzAuNiwwLDAuOCwwLDAuOS0wLjVjMC4xLTAuNSwwLjEtNC44LDAuMS01LjZjLTAuNC0wLjQtMC42LTAuNC0xLjEtMC41di0wLjRoMi4yYzAuNiwwLjksMC43LDEuMSwxLjgsMi40bDIuMSwyLjV2LTMuM2MwLTEuMiwwLTEuMi0xLjItMS4zdi0wLjRoMi45djAuNGMtMC44LDAtMC45LDAuMi0wLjksMS40bC0wLjEsNS43SC00NWwtMC43LTAuOGMtMC4zLTAuNC0wLjctMC44LTEtMS4ybC0yLjktMy42djMuOGMwLDEuMiwwLjEsMS4yLDEuMiwxLjN2MC40TC01MS4zLDQxNC44Qy01MS4zLDQxNC44LTUxLjMsNDE0LjgtNTEuMyw0MTQuOHogTS0xNi4xLDQxMi41bDAuNCwwYzAuNCwxLjIsMS4xLDEuOCwyLjIsMS44YzAuOCwwLDEuNS0wLjMsMS41LTEuMWMwLTAuOC0wLjgtMS4yLTEuMi0xLjNsLTAuOS0wLjNjLTAuNi0wLjItMS43LTAuNy0xLjctMi4xYzAtMS40LDEuMS0yLjEsMi4zLTIuMWMwLjUsMCwxLjEsMC4xLDEuNywwLjVsMC40LTAuM2wwLjIsMi4ybC0wLjQsMC4xYy0wLjEtMC41LTAuMi0wLjctMC41LTEuMWMtMC40LTAuNS0wLjgtMC43LTEuNC0wLjdjLTAuOCwwLTEuMiwwLjQtMS4yLDFjMCwwLjksMC45LDEuMiwxLjcsMS40YzAuNCwwLjEsMC44LDAuMywxLjEsMC40YzAuNiwwLjMsMS4xLDEsMS4xLDEuOWMwLDEuMy0xLDIuMy0yLjYsMi4zYy0xLDAtMS42LTAuNC0xLjktMC42bC0wLjYtMC40TC0xNi4xLDQxMi41TC0xNi4xLDQxMi41eiBNLTQuMSw0MTQuOHYtMC4zYzAuNywwLDAuOS0wLjMsMC45LTAuOHYtNS40aC0wLjljLTAuOCwwLTEuNCwwLTEuNCwxLjNoLTAuNGwwLjEtMi4xaDYuN2wwLjEsMi4xSDAuNWMtMC4xLTEuMy0wLjYtMS4zLTEuNC0xLjNoLTAuOXY1LjRjMCwwLjYsMC4yLDAuOCwwLjksMC44djAuM0gtNC4xeiBNLTU2LjksNDA3LjR2MC40Yy0xLDAuMS0xLDAuMS0xLDEuN3YxLjdjMCwwLjksMCwxLjcsMC41LDIuNGMwLjQsMC41LDEsMC42LDEuMywwLjZjMS4xLDAsMS42LTAuNSwxLjktMS40YzAuMi0wLjcsMC4yLTIsMC4yLTIuOGMwLTAuMywwLTEuMSwwLTEuNGMwLTAuNy0wLjQtMC43LTEtMC43di0wLjRoMi44djAuNGMtMC43LDAtMC44LDAuMS0wLjksMC45YzAsMC4yLTAuMSwyLjItMC4xLDIuNWMwLDAuNi0wLjEsMS4xLTAuMiwxLjZjLTAuNSwyLTIuNCwyLjEtMi45LDIuMWMtMC40LDAtMS4yLTAuMS0xLjktMC41Yy0xLjEtMC43LTEuMS0xLjgtMS4xLTN2LTEuN2MwLTAuOCwwLTEuMSwwLTEuM2MtMC4xLTAuNS0wLjMtMC41LTAuOC0wLjZ2LTAuNEwtNTYuOSw0MDcuNEwtNTYuOSw0MDcuNEwtNTYuOSw0MDcuNHogTS0zMC45LDQwNy40djAuNGMtMC43LDAuMS0wLjgsMC4zLTEuNCwxLjhsLTIuMiw1LjNILTM1bC0yLTUuNGMtMC41LTEuNC0wLjYtMS42LTEuMy0xLjd2LTAuNGgzLjV2MC40Yy0wLjYsMC0xLDAtMSwwLjVjMCwwLjIsMC4xLDAuNCwwLjMsMWwxLjMsMy43bDEuNS0zLjljMC4xLTAuMywwLjItMC42LDAuMi0wLjhjMC0wLjUtMC41LTAuNi0xLTAuNnYtMC40Qy0zMy41LDQwNy40LTMwLjksNDA3LjQtMzAuOSw0MDcuNHogTTMuOSw0MTQuOHYtMC40YzAuNi0wLjEsMC44LTAuMSwwLjktMC4yQzUsNDE0LDUsNDEzLjgsNSw0MTN2LTEuM2wtMS45LTNjLTAuNS0wLjgtMC41LTAuOC0xLjItMC45di0wLjRoMy44djAuNGMtMC44LDAtMS4xLDAtMS4xLDAuNGMwLDAuMiwwLjEsMC40LDAuMywwLjdsMS4xLDEuOGwxLTEuOGMwLjItMC40LDAuMy0wLjYsMC4zLTAuOGMwLTAuNC0wLjMtMC40LTAuOC0wLjR2LTAuNGgyLjl2MC40Yy0wLjcsMC0xLDAuMi0xLjgsMS42bC0xLjEsMS45djEuNWMwLDEuMywwLDEuNCwxLjEsMS41djAuNEwzLjksNDE0LjhMMy45LDQxNC44TDMuOSw0MTQuOHogTS0yNC42LDQxNC44YzAtMC41LDAuMS0xLjQsMC4yLTEuOWgtMC40Yy0wLjMsMS4zLTEsMS4yLTIuMSwxLjJjLTEsMC0xLjItMC4zLTEuMi0wLjd2LTIuMWgwLjhjMC45LDAsMS4yLDAuMSwxLjIsMC45aDAuNHYtMi40aC0wLjRjLTAuMSwwLjctMC4yLDAuOS0xLjIsMC45SC0yOHYtMi42aDAuOWMxLjIsMCwxLjcsMC4xLDEuOSwxLjFoMC4zbDAtMS43aC01LjJ2MC40YzAuNSwwLjEsMC44LDAuMSwwLjgsMC40YzAuMSwwLjIsMC4xLDEsMC4xLDEuM3YyLjZjMCwwLjIsMCwxLjEsMCwxLjNjMCwwLjgtMC4xLDAuOS0wLjksMC45djAuNEMtMzAuMiw0MTQuOC0yNC42LDQxNC44LTI0LjYsNDE0Ljh6IE03Mi42LDQxMS42djAuNGMtMC43LDAtMC43LDAuMi0wLjcsMS42djAuNmMtMC42LDAuNC0xLjQsMC45LTIuOCwwLjljLTIuNSwwLTMuNy0xLjktMy43LTMuOGMwLTIuMywxLjYtMy45LDMuNi0zLjljMS4yLDAsMiwwLjUsMi42LDAuOGwwLjQtMC40bDAuMSwyLjNsLTAuMywwLjFjLTAuMi0wLjQtMC40LTAuOS0wLjktMS41Yy0wLjItMC4yLTAuNy0wLjUtMS41LTAuNWMtMS4zLDAtMi4zLDEuMS0yLjMsMy4yYzAsMS43LDAuOCwzLjEsMi4zLDMuMWMwLjgsMCwxLjItMC42LDEuMy0wLjZjMC4xLTAuMiwwLjItMC40LDAuMS0wLjdjMC0wLjktMC4yLTEtMS0xdi0wLjRDNjkuNiw0MTEuNiw3Mi42LDQxMS42LDcyLjYsNDExLjZ6IE0tMjEuMiw0MTAuOGMwLjIsMCwwLjUsMC4xLDAuNywwLjFjMC44LDAsMS41LTAuNywxLjUtMS4yYzAtMC45LTAuNC0xLjYtMS43LTEuNmMtMC4yLDAtMC4zLDAtMC40LDBMLTIxLjIsNDEwLjhMLTIxLjIsNDEwLjh6IE0tMjEuMiw0MTIuNGMwLDEuNywwLDEuOSwwLjksMS45djAuNGgtMy4xdi0wLjRjMC44LTAuMSwwLjktMC4yLDAuOS0xYzAtMC4zLDAtMC42LDAtMC45di0yLjdjMC0wLjksMC0xLjIsMC0xLjRjLTAuMS0wLjQtMC4zLTAuNS0wLjktMC41di0wLjRsMy4zLDBjMS44LDAsMi40LDAuOSwyLjQsMS45YzAsMC43LTAuNCwxLjYtMS40LDEuOWwxLjMsMi4zYzAuNSwwLjksMC43LDEuMSwxLjMsMS4xdjAuMmMtMC4yLDAtMC4zLDAtMC41LDBjLTEuNCwwLTItMC41LTIuNS0xLjdsLTAuNC0wLjljLTAuNC0wLjktMC42LTAuOS0xLjMtMC45TC0yMS4yLDQxMi40TC0yMS4yLDQxMi40TC0yMS4yLDQxMi40eiIvPjwvZz48cGF0aCBpZD0idmVydC1ydWxlIiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMC43NDciIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTS03MCwzODAuNHYzNC4zIi8+PC9zdmc+" width="200px" />
 </div>
 
+
 <div class="container">
+  <div class="tool-title"> News and Events URL Generators</div>
   <!-- begin of the tool section -->
-  <div class="panel-group" id="accordion">
     <!-- The first tool -->
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-          Filter news without tags</a>
+          <i class="fa fa-caret-down" aria-hidden="true" style="color:#FFCB05"></i>&nbsp;
+          <i class="fa fa-newspaper-o" aria-hidden="true"></i> 
+          <a class="a-click" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+            Get a news URL without tags</a>
         </h4>
       </div>
-      <div id="collapse1" class="panel-collapse collapse in">
+      <div id="collapse1" class="panel-collapse collapse">
         <!-- Begin of the tool -->
         <div class="boxing">
-          <p>You can choose any combinations of the filters, expect that you cannot choose Research and Campus & Community at the sametime. Leave all choice to default to indicate that you want all news. </p>
+          <p>You may filter either by Department and Research or by Department and Community filter, but not all three. Leave all fields at their default selection if you would like all news. </p>
           <div class="row">
             <div class="col-md-3">
               <div id="1-insert1"></div>
@@ -298,12 +501,28 @@ crossorigin="anonymous"></script>
             <div class="col-md-3">
               <div id="1-insert3"></div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+              <div class="dropdown-p"> Press to generate:</div>
               <button id="tool-one" class="generatebtn"> Generate URL</button>
             </div>
+            <div class="col-md-1">
+              <div class="dropdown-p"> Reset:</div>
+              <button id="reset-one" class="resetbtn"> 
+                <i class="fa fa-refresh" aria-hidden="true"></i></button>
+            </div>
           </div>
-          <div class="row">
-            <div id="url-one" class="col-md-12"></div>
+          <div id="url-one" style="display: none">
+            <div class="row">
+              <div class="dropdown-p col-md-11"> 
+                Here's your URL! Press the icon to copy to your clipboard or select the URL using your cursor to copy.
+                <div  id="res-url-one" class="well-disp"> </div>
+              </div>
+              <div class="col-md-1">
+                <div class="dropdown-p"> Copy:</div>
+                <button id="copy-url-one" class="copybtn"> 
+                    <i class="fa fa-clipboard" aria-hidden="true"></i></button>
+              </div>
+            </div>
           </div>
         </div>
         <!-- End of the tool -->
@@ -313,14 +532,16 @@ crossorigin="anonymous"></script>
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-          Filter news with tags</a>
+          <i class="fa fa-caret-down" aria-hidden="true" style="color:#FFCB05"></i>&nbsp;
+          <i class="fa fa-tags" aria-hidden="true"></i> 
+          <a class="a-click" data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+            Get a news URL with tags</a>
         </h4>
       </div>
       <div id="collapse2" class="panel-collapse collapse">
         <!-- Begin of the tool -->
         <div class="boxing">
-          <p>You can choose any combinations of the filters. Leave all choice to default to indicate that you want all news. </p>
+          <p>You may filter by any combination. Leave all fields at their default selection if you would like all news. </p>
           <div class="row">
             <div class="col-md-4">
               <div id="2-insert1"></div>
@@ -328,12 +549,28 @@ crossorigin="anonymous"></script>
             <div class="col-md-4">
               <div id="2-insert4"></div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+              <div class="dropdown-p"> Press to generate:</div>
               <button id="tool-two" class="generatebtn"> Generate URL</button>
             </div>
+            <div class="col-md-1">
+              <div class="dropdown-p"> Reset:</div>
+              <button id="reset-two" class="resetbtn"> 
+                <i class="fa fa-refresh" aria-hidden="true"></i></button>
+            </div>
           </div>
-          <div class="row">
-            <div id="url-two" class="col-md-12"></div>
+          <div id="url-two" style="display: none">
+            <div class="row">
+              <div class="dropdown-p col-md-11"> 
+                Here's your URL! Press the icon to copy to your clipboard or select the URL using your cursor to copy.
+                <div  id="res-url-two" class="well-disp"> </div>
+              </div>
+              <div class="col-md-1">
+                <div class="dropdown-p"> Copy:</div>
+                <button id="copy-url-two" class="copybtn"> 
+                    <i class="fa fa-clipboard" aria-hidden="true"></i></button>
+              </div>
+            </div>
           </div>
         </div>
         <!-- End of the tool -->
@@ -343,33 +580,51 @@ crossorigin="anonymous"></script>
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+          <i class="fa fa-caret-down" aria-hidden="true" style="color:#FFCB05"></i>&nbsp;
+          <i class="fa fa-calendar-check-o" aria-hidden="true"></i> 
+          <a class="a-click" data-toggle="collapse" data-parent="#accordion" href="#collapse3">
           Event URL Generator</a>
         </h4>
       </div>
       <div id="collapse3" class="panel-collapse collapse">
         <!-- Begin of the tool -->
         <div class="boxing">
-          <p> </p>
+          <p> Simply select an event and generate! Leave all fields at their default selection if you would like all events. </p>
           <div class="row">
             <div class="col-md-6">
               <div id="3-insert1"></div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
+              <div class="dropdown-p"> Press to generate:</div>
               <button id="tool-three" class="generatebtn"> Generate URL</button>
             </div>
+            <div class="col-md-1">
+              <div class="dropdown-p"> Reset:</div>
+              <button id="reset-three" class="resetbtn"> 
+                <i class="fa fa-refresh" aria-hidden="true"></i></button>
+            </div>
           </div>
-          <div class="row">
-            <div id="url-three" class="col-md-12"></div>
+          <div id="url-three" style="display: none">
+            <div class="row">
+              <div class="dropdown-p col-md-11"> 
+                Here's your URL! Press the icon to copy to your clipboard or select the URL using your cursor to copy.
+                <div  id="res-url-three" class="well-disp"> </div>
+              </div>
+              <div class="col-md-1">
+                <div class="dropdown-p"> Copy:</div>
+                <button id="copy-url-three" class="copybtn"> 
+                    <i class="fa fa-clipboard" aria-hidden="true"></i></button>
+              </div>
+            </div>
           </div>
         </div>
         <!-- End of the tool -->
       </div>
     </div>
-  </div>
   <!-- The first tool -->
-  
-
 </div>
+
+
+
 </body>
 </html>
