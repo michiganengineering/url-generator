@@ -361,6 +361,8 @@ crossorigin="anonymous"></script>
         $child=$("#copy-url-three").children();
         $child.removeClass("fa-clipboard").addClass("fa-check");
       });
+      /////////////////////////////////////////////////////////
+
   });
 
   function copy_url_clip(id) {
@@ -387,9 +389,9 @@ crossorigin="anonymous"></script>
       innerStr = `
         <div id="`+labelId+`" class="dropdown-p"> Select `+toTitleCase(initMes.toLowerCase())+`:</div>
         <div class="dropdown">
-          <button id="`+buttonId+`" onclick="toggleFunction('`+dropdownId+`')" class="dropbtn">`+initMes+`</button>
+          <button id="`+buttonId+`" onfocus="showFunction('`+dropdownId+`')" class="dropbtn">`+initMes+`</button>
           <div id="`+dropdownId+`" class="dropdown-content">
-            <input id="`+inputId+`" class="dropdown-input" type="text" placeholder="Search.." onkeyup="filterFunction('`+dropdownId+`','`+inputId+`')">
+            <input id="`+inputId+`" class="dropdown-input" type="text" placeholder="Search.." onblur="hideFunction('`+dropdownId+`')" onkeyup="filterFunction(event, '`+dropdownId+`','`+inputId+`')">
             <div>
               `+list+`
             </div>
@@ -448,13 +450,27 @@ crossorigin="anonymous"></script>
   function toggleFunction(dropdown_id) {
       $('#'+dropdown_id).toggle();
   }
-
-  function filterFunction(dropdown_id, input_id) {
+  function showFunction(dropdown_id) {
+      $('#'+dropdown_id).show();
+  }
+  function hideFunction(dropdown_id) {
+      $('#'+dropdown_id).hide();
+  }
+  function filterFunction(event, dropdown_id, input_id) {
       var input, filter, ul, li, a, i;
       input = document.getElementById(input_id);
       filter = input.value.toUpperCase();
       div = document.getElementById(dropdown_id);
       a = div.getElementsByTagName("a");
+      if (event.keyCode == 13) {
+        for (i = 0; i < a.length; i++) {
+            if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                a[i].click();
+                return false;
+            } 
+        }
+        return false;
+      }
       for (i = 0; i < a.length; i++) {
           if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
               a[i].style.display = "";
