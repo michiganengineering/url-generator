@@ -19,7 +19,8 @@ crossorigin="anonymous"></script>
 <!-- FontAwesome JavaScript -->
 <script src="https://use.fontawesome.com/7c44528901.js"></script>
 
-<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans|Open+Sans:b,600' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Source Code Pro' rel='stylesheet'>
 <!-- CSS writen by Zihan Li -->
 <style>
   body {
@@ -34,8 +35,8 @@ crossorigin="anonymous"></script>
       padding: 10px 12px 10px 3px;
       cursor: pointer;
       width: 100%;
-      font-family: 'Open Sans', sans-serif;
-      font-weight: 800;
+      font-family: 'Open Sans';
+      font-weight: 600;
   }
 
   .dropbtn:before {
@@ -96,8 +97,8 @@ crossorigin="anonymous"></script>
       padding: 10px 3px 10px 3px;
       cursor: pointer;
       width: 100%;
-      font-family: 'Open Sans', sans-serif;
-      font-weight: 800;
+      font-family: 'Open Sans';
+      font-weight: 600;
   }
 
   .resetbtn {
@@ -143,6 +144,7 @@ crossorigin="anonymous"></script>
   }
 
   .well-disp {
+    font-family: 'Source Code Pro';
     background:#edf3f8;
     border:1px solid #aabdcd;
     border-radius:2px;
@@ -187,8 +189,13 @@ crossorigin="anonymous"></script>
     color:#00274c;
     background:#e2edf6;
     padding: 10px 10px 10px 10px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 800;
+    font-family: "Open Sans";
+    font-weight: bold;
+  }
+
+  .a-click {
+    font-size:18px;
+    color:#ffcb05;
   }
 
 
@@ -389,7 +396,7 @@ crossorigin="anonymous"></script>
       innerStr = `
         <div id="`+labelId+`" class="dropdown-p"> Select `+toTitleCase(initMes.toLowerCase())+`:</div>
         <div class="dropdown">
-          <button id="`+buttonId+`" onfocus="showFunction('`+dropdownId+`')" class="dropbtn">`+initMes+`</button>
+          <button id="`+buttonId+`" onfocus="showFunction('`+dropdownId+`')" onclick="showFunction('`+dropdownId+`')" class="dropbtn">`+initMes+`</button>
           <div id="`+dropdownId+`" class="dropdown-content">
             <input id="`+inputId+`" class="dropdown-input" type="text" placeholder="Search.." onblur="hideFunction('`+dropdownId+`')" onkeyup="filterFunction(event, '`+dropdownId+`','`+inputId+`')">
             <div>
